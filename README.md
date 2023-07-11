@@ -13,7 +13,7 @@ the children identify what foods are healthy and which foods are not.
 
 
 ## Roadmap/Todos
-- [ ] Build/Host on the web
+- [x] Build/Host on the web
 - [ ] Build for android(create .apk)
 - [ ] Add sound effects
 - [ ] Move update triggers to more accurate locations
