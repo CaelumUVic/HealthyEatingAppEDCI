@@ -1,8 +1,9 @@
 import 'dart:math';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 const posSayingsStatic = [
-  "Yep, that's not healthy",
+  "Yep, that's not healthy!",
   "Great work!",
   "Great job!",
   "Well done!",
@@ -53,27 +54,13 @@ const goodFoodsStatic = [
 ];
 
 // Extra Content for Intro
-const verbiage =
-    "A message from our friend ChatGPT:\n"
+const verbiage = "A message from our friend ChatGPT:\n"
     "Hey there! Do you know why healthy food is so important for you? "
     "Well, I'll tell you! As ChatGPT, I say that healthy food is like magic fuel"
     "for your body. It helps you grow up strong, smart, and full of energy!\n"
     "When you eat healthy foods like fruits, vegetables, and whole grains, "
     "they give you the power to be a superhero! They have special vitamins"
-    "and minerals that make your body feel good and help you stay healthy.\n"
-    "Healthy foods make your bones and muscles strong, just like the "
-    "superheroes you love! They also make your brain grow big and smart, "
-    "so you can learn new things and have lots of fun.\nGuess what? "
-    "Healthy foods protect you from getting sick too! They have special "
-    "shields called antioxidants that keep your body safe from germs. That "
-    "way, you can stay strong and be ready to play and have adventures.\n"
-    "So remember, my friend, eating healthy foods like colorful fruits "
-    "and crunchy vegetables makes you a superhero too! You get the strength, "
-    "energy, and superpowers to do amazing things.\n"
-    "Listen to your parents or caregivers who want the best for you. "
-    "They know that eating healthy food is like having a secret superpower "
-    "to grow up strong and smart!\nNow, go out there and be a healthy "
-    "superhero! 🥦💪😄";
+    "and minerals that make your body feel good and help you stay healthy.";
 
 // Defines the App Bar for the Entire Application
 final appBar = AppBar(
@@ -109,7 +96,8 @@ List getRandomFood(context) {
       Image(
           image: AssetImage("assets/images/$fileName.jpg"),
           width: MediaQuery.of(context).size.width * 0.5,
-          height: MediaQuery.of(context).size.height - 400)
+          height: MediaQuery.of(context).size.height - 400),
+      foodName
     ];
   }
   // Good Foods
@@ -128,7 +116,8 @@ List getRandomFood(context) {
       Image(
           image: AssetImage("assets/images/$fileName.jpg"),
           width: MediaQuery.of(context).size.width * 0.5,
-          height: MediaQuery.of(context).size.height - 400)
+          height: MediaQuery.of(context).size.height - 400),
+      foodName
     ];
   }
 }
@@ -165,14 +154,18 @@ class Home extends StatelessWidget {
             Container(
                 padding: const EdgeInsets.all(10),
                 alignment: Alignment.topCenter,
-                child: const Text(verbiage, style: TextStyle(fontSize: 16), textAlign: TextAlign.center)),
+                child: const Text(verbiage,
+                    style: TextStyle(fontSize: 16),
+                    textAlign: TextAlign.center)),
             ElevatedButton(
                 onPressed: () {
-                  Navigator.of(context)
-                      .push(MaterialPageRoute(builder: (_) => const FoodGame()));
+                  Navigator.of(context).push(
+                      MaterialPageRoute(builder: (_) => const FoodGame()));
                 },
-                child: Container(padding: const EdgeInsets.all(10), child: const Text("Play the Game!",
-                    style: TextStyle(fontSize: 20))))
+                child: Container(
+                    padding: const EdgeInsets.all(10),
+                    child: const Text("Play the Game!",
+                        style: TextStyle(fontSize: 20))))
           ])),
     );
   }
@@ -186,7 +179,7 @@ class FoodGame extends StatefulWidget {
 }
 
 class _FoodGameState extends State<FoodGame> {
-  List foodObj = [0];
+  List foodObj = [0, 0, 0, 0];
   bool firstRun = true;
   int score = 0;
 
@@ -196,10 +189,19 @@ class _FoodGameState extends State<FoodGame> {
     setState(() {
       var oldFoodObj = foodObj;
       foodObj = getRandomFood(context);
-      while (oldFoodObj[0] == foodObj[0]) {
+      while (oldFoodObj[3] == foodObj[3]) {
         foodObj = getRandomFood(context);
       }
     });
+  }
+
+  // Added a congratulatory message when
+  void checkIfCongratulationsAreInOrder() {
+    final int maxScore = goodFoodsStatic.length + badFoodsStatic.length;
+    if (score != 0 && score % maxScore == 0) {
+      Navigator.of(context).push(
+          MaterialPageRoute(builder: (_) => Congratulations(score: score)));
+    }
   }
 
   @override
@@ -239,6 +241,7 @@ class _FoodGameState extends State<FoodGame> {
                             setState(() {
                               score++;
                             });
+                            checkIfCongratulationsAreInOrder();
                           }
                         },
                         color: Colors.green,
@@ -261,6 +264,7 @@ class _FoodGameState extends State<FoodGame> {
                             setState(() {
                               score++;
                             });
+                            checkIfCongratulationsAreInOrder();
                           }
                         },
                         color: Colors.lightBlue,
@@ -275,7 +279,7 @@ class _FoodGameState extends State<FoodGame> {
                     padding: const EdgeInsets.all(10),
                     child: Text(
                       "Score: $score",
-                      style: TextStyle(fontSize: 16),
+                      style: const TextStyle(fontSize: 16),
                     ),
                   )
                 ]))));
@@ -297,7 +301,7 @@ class Correct extends StatelessWidget {
         home: Scaffold(
       backgroundColor: Colors.green,
       body: Center(
-        child: Column(children: [
+        child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
           Container(
               padding: const EdgeInsets.all(10.0),
               child: Text(randomPositiveAffirmation(),
@@ -333,7 +337,8 @@ class Incorrect extends StatelessWidget {
       home: Scaffold(
           backgroundColor: Colors.red,
           body: Center(
-            child: Column(children: [
+            child:
+                Column(mainAxisAlignment: MainAxisAlignment.center, children: [
               Container(
                   padding: const EdgeInsets.all(10.0),
                   child: Text(randomNegativeAffirmation(),
@@ -351,6 +356,42 @@ class Incorrect extends StatelessWidget {
                   })
             ]),
           )),
+    );
+  }
+}
+
+class Congratulations extends StatelessWidget {
+  int score;
+  Congratulations({Key? key, required this.score}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: appBar,
+      body: Center(
+        child: Column(
+          children: [
+            Container(
+                padding: const EdgeInsets.all(10),
+                child: Text(
+                    "Wow, you've gotten $score right!\nCongratulations!",
+                    style: const TextStyle(
+                        fontSize: 24,
+                        fontFamily: "OpenDyslexic3",
+                        fontWeight: FontWeight.w700),
+                    textAlign: TextAlign.center)),
+            ElevatedButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Container(
+                  padding: const EdgeInsets.all(10),
+                  child: const Text("Back to the Game!",
+                      style: TextStyle(fontSize: 20)),
+                ))
+          ],
+        ),
+      ),
     );
   }
 }
