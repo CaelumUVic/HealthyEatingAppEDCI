@@ -78,7 +78,6 @@ flutter:
     - assets/buttons/thumbs_up.png
     - assets/buttons/next.png
     - assets/buttons/retry.png
-    - assets/sounds/hover.mp3
     - assets/sounds/negative.wav
     - assets/sounds/success.wav
     - assets/sounds/click.wav

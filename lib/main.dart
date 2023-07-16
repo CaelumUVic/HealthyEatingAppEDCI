@@ -166,7 +166,6 @@ class Home extends StatelessWidget {
                     textAlign: TextAlign.center)),
             ElevatedButton(
                 onPressed: () {
-                  playSound("assets/sounds/click.wav");
                   Navigator.of(context).push(
                       MaterialPageRoute(builder: (_) => const FoodGame()));
                 },
@@ -254,7 +253,7 @@ class _FoodGameState extends State<FoodGame> {
                             checkIfCongratulationsAreInOrder();
                           }
                         },
-                        color: Colors.green,
+                        color: Colors.lightBlue,
                         padding: const EdgeInsets.all(10),
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10.0)),
@@ -279,7 +278,7 @@ class _FoodGameState extends State<FoodGame> {
                             checkIfCongratulationsAreInOrder();
                           }
                         },
-                        color: Colors.lightBlue,
+                        color: Colors.amber,
                         padding: const EdgeInsets.all(10),
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10.0)),
