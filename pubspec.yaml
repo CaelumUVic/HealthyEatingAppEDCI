@@ -35,6 +35,7 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
+  audioplayers: ^4.1.0
 
 dev_dependencies:
   flutter_test:
@@ -77,6 +78,10 @@ flutter:
     - assets/buttons/thumbs_up.png
     - assets/buttons/next.png
     - assets/buttons/retry.png
+    - assets/sounds/hover.mp3
+    - assets/sounds/negative.wav
+    - assets/sounds/success.wav
+    - assets/sounds/click.wav
 
   fonts:
     - family: OpenDyslexic3

@@ -1,6 +1,8 @@
 import 'dart:math';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:audioplayers/audioplayers.dart';
+
 
 const posSayingsStatic = [
   "Yep, that's not healthy!",
@@ -78,6 +80,11 @@ final appBar = AppBar(
             ])),
     centerTitle: true,
     backgroundColor: Colors.lime);
+
+Future<void> playSound(asset) async {
+  final player = AudioPlayer();
+  await player.play(UrlSource(asset));
+}
 
 // This function is what retrieves the food, whether or not it's bad, and
 // what the file name is (the food name lowercase separated by _)
@@ -159,6 +166,7 @@ class Home extends StatelessWidget {
                     textAlign: TextAlign.center)),
             ElevatedButton(
                 onPressed: () {
+                  playSound("assets/sounds/click.wav");
                   Navigator.of(context).push(
                       MaterialPageRoute(builder: (_) => const FoodGame()));
                 },
@@ -232,9 +240,11 @@ class _FoodGameState extends State<FoodGame> {
                     MaterialButton(
                         onPressed: () {
                           if (!foodObj[1]) {
+                            playSound("assets/sounds/negative.wav");
                             Navigator.of(context).push(MaterialPageRoute(
                                 builder: (_) => const Incorrect()));
                           } else {
+                            playSound("assets/sounds/success.wav");
                             Navigator.of(context).push(MaterialPageRoute(
                                 builder: (_) => const Correct()));
                             refresh(context);
@@ -255,9 +265,11 @@ class _FoodGameState extends State<FoodGame> {
                     MaterialButton(
                         onPressed: () {
                           if (foodObj[1]) {
+                            playSound("assets/sounds/negative.wav");
                             Navigator.of(context).push(MaterialPageRoute(
                                 builder: (_) => const Incorrect()));
                           } else {
+                            playSound("assets/sounds/success.wav");
                             Navigator.of(context).push(MaterialPageRoute(
                                 builder: (_) => const Correct()));
                             refresh(context);
@@ -309,7 +321,8 @@ class Correct extends StatelessWidget {
                       fontSize: 24,
                       fontFamily: "OpenDyslexic3",
                       fontWeight: FontWeight.w700,
-                      color: Colors.white))),
+                      color: Colors.white),
+                  textAlign: TextAlign.center)),
           MaterialButton(
               child: const Image(
                   image: AssetImage("assets/buttons/next.png"), width: 100),
@@ -346,7 +359,8 @@ class Incorrect extends StatelessWidget {
                           fontSize: 24,
                           fontFamily: "OpenDyslexic3",
                           fontWeight: FontWeight.w700,
-                          color: Colors.white))),
+                          color: Colors.white),
+                      textAlign: TextAlign.center)),
               MaterialButton(
                   child: const Image(
                       image: AssetImage("assets/buttons/retry.png"),
@@ -361,8 +375,8 @@ class Incorrect extends StatelessWidget {
 }
 
 class Congratulations extends StatelessWidget {
-  int score;
-  Congratulations({Key? key, required this.score}) : super(key: key);
+  final int score;
+  const Congratulations({Key? key, required this.score}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -370,6 +384,7 @@ class Congratulations extends StatelessWidget {
       appBar: appBar,
       body: Center(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
                 padding: const EdgeInsets.all(10),
